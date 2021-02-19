@@ -14,52 +14,59 @@ void solve(){
     int n;
     cin>>n;
     vector<string>A(n);
-    set<string>good, bad;
-    map<char, vector<string>>mp;
+    unordered_map<string, string>body;
+    unordered_map<char, vector<string>>mp;
+    unordered_map<string, int>good, bad;
+    
     for(int i=0;i<n;i++){
         cin>>A[i];
         mp[A[i][0]].push_back(A[i]);
-        good.insert(A[i]);
+        good[A[i]]++;
+        string last = A[i].substr(1);
+        body[last].push_back(A[i][0]);
     }
 
     int res = 0;
-    for(int i=0;i<mp.size() - 1;i++){
-        vector<string> vs = mp[i];
-        for(int j=i+1;j<mp.size();j++){
-            vector<string> other = mp[j];
-            for(auto s1:vs){
-                for(auto s2: other){
-                    string t1 = s1, t2 = s2;
-                    char first = s1[0];
-                    t1[0] = t2[0];
-                    t2[0] = first;
-                    if(good.count(t1) == 0 && good.count(t2) == 0){
-                        if(bad.count(t1) ==0 && bad.count(t2) == 0){
-                            res++;
-                            bad.insert(t1);
-                            bad.insert(t2);
-                        }
-                    }
+    
+    unordered_map<string, string>::iterator it, it1;
+    for(it = body.begin();it != body.end();it++){
+        for(it1 = body.begin();it1 != body.end();it1++){
+            if(it->first != it1->first){
+                string a = it->second, b = it1->second;
+                good[a]++;
+                good[b]++;
 
+                // get unique values
+                set<char>xy(a.begin(), a.end());
+                for(auto &c: b){
+                    if(xy.count(c) == 0){
+                        xy.insert(c);
+                    }
+                }
+
+                int unique_length = xy.size();
+                if( ((bad.find(a) != bad.end()) && bad.find(b) != bad.end()) || 1){
+                    res += (a.size() - unique_length) * (b.size() - unique_length);
+                    bad[a]++;
+                    bad[b]++;        
                 }
             }
         }
     }
-    cout<<2*res<<endl;
-    // for(auto ss:mp){
-    //     cout<<ss.first<<" -> ";
-    //     for(auto i:ss.second){
-    //         cout<<i<<" ";
-    //     }
-    //     cout<<endl;
-    // }
+
+    cout<<res<<endl;
 }
 int main()
 {
-    int t;
-    cin>>t;
-    while(t--){
-        solve();
-    }
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    cout<<64*1000<<"\n";
+    cout<<pow(2, 16);
+    // int t;
+    // cin>>t;
+    // while(t--){
+    //     solve();
+    // }
     return 0;
 }

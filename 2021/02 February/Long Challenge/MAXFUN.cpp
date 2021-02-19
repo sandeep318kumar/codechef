@@ -10,24 +10,26 @@ typedef vector<vi> vvi;
 typedef vector<vl> vvl;
 
 
-void solve(){
+ll solve(){
     int n;
     cin>>n;
-    vector<int>A(n);
+    vector<ll>A(n);
     int minA = INT_MAX, maxA = INT_MIN;
-    for(int i=0;i<n;i++){
+    for(ll i=0;i<n;i++){
         cin>>A[i];
-        minA = min(A[i], minA);
-        maxA = max(A[i], maxA);
     }
-    cout<<2*(abs(maxA - minA))<<endl;;
+
+    sort(A.begin(), A.end());
+
+    return max( (abs(A[0] - A[1]) + abs(A[0] - A[n-1]) + abs(A[1] - A[n-1]) ), 
+        ( abs(A[0] - A[n-1]) + abs(A[0] - A[n-2])  + abs(A[n-1] - A[n-2]))  );
 }
 int main()
 {
     int t;
     cin>>t;
     while(t--){
-        solve();
+        cout<<solve()<<endl;
     }
     return 0;
 }

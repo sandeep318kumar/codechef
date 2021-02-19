@@ -9,29 +9,27 @@ typedef vector<ll> vl;
 typedef vector<vi> vvi;
 typedef vector<vl> vvl;
 
-
-
 void solve(){
-    int n;
+    ll n;
     cin>>n;
-    vector<int>A(n), B(n);
-    for(int i=0;i<n;i++){
+    vector<ll>A(n), B(n);
+    for(ll i=0;i<n;i++){
         cin>>A[i];
     }
 
-    for(int j=0;j<n;j++){
+    for(ll j=0;j<n;j++){
         cin>>B[j];
     }
-    map<int, int>location, jump;
-    for(int i=0;i<n;i++){
-        location[A[i]] = i;
+    map<ll, ll>location, jump;
+    for(ll i=0;i<n;i++){
+        location[A[i]] = i+1;
         jump[A[i]] = B[i];
     }
-    int res = 0;
-    for(int i = 2;i<=n;i++){
-        if(location[i] < location[i-1]){
-            int diff = abs(location[i-1] - location[i]);
-            int j = (diff/jump[i]) + 1;
+    ll res = 0;
+    for(ll i = 2;i<=n;i++){
+        if(location[i] <= location[i-1]){
+            ll diff = abs(location[i-1] - location[i]);
+            ll j = (diff/jump[i]) + 1;
             res += j;
             location[i] += j * jump[i];
         }
@@ -40,7 +38,7 @@ void solve(){
 }
 int main()
 {
-    int t;
+    ll t;
     cin>>t;
     while(t--){
         solve();
